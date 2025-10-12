@@ -4,7 +4,7 @@ import {
   getAttendanceByDate,
   getAttendanceByDateRange,
   getAttendanceByEmail,
-  getAttendanceByDepartment,
+  getAttendanceBySection,
   getAttendanceByPartnerId,
 } from "../services/sheetsService";
 import { formatTimestamp } from "../utils/transformers";
@@ -167,46 +167,45 @@ export async function getEmailReport(req: Request, res: Response): Promise<void>
 }
 
 
-// get attendance records filtered by department
-// GET /api/reports/department/:department?date=YYYY-MM-DD
+// get attendance records filtered by section
+// GET /api/reports/section/:section?date=YYYY-MM-DD
 
-export async function getDepartmentReport(req: Request, res: Response): Promise<void> {
+export async function getSectionReport(req: Request, res: Response): Promise<void> {
   try {
-    const { department } = req.params;
+    const { section } = req.params;
     const { date } = req.query;
 
-    if (!department) {
+    if (!section) {
       res.status(400).json({
         success: false,
         error: "Missing parameter",
-        message: "Department parameter is required",
+        message: "Section parameter is required",
       });
       return;
     }
 
     const targetDate = date ? (date as string) : undefined;
-    const data = await getAttendanceByDepartment(department, targetDate);
+    const data = await getAttendanceBySection(section, targetDate);
 
     res.status(200).json({
       success: true,
-      message: `Attendance for department ${department} retrieved successfully`,
+      message: `Attendance for ${section} retrieved successfully`,
       totalRecords: data.length,
       data: data,
       timestamp: formatTimestamp(),
     });
   } catch (error) {
-    console.error(`[${new Date().toISOString()}] Error in getDepartmentReport:`, error);
+    console.error(`[${new Date().toISOString()}] Error in getSectionReport:`, error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
 
     res.status(500).json({
       success: false,
-      error: "Failed to retrieve attendance by department",
+      error: "Failed to retrieve attendance by section",
       message: errorMessage,
       timestamp: formatTimestamp(),
     });
   }
 }
-
 
 // get attendance records filtered by partner ID
 // GET /api/reports/student/:partnerId?date=YYYY-MM-DD

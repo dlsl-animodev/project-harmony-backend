@@ -5,7 +5,7 @@ import {
   getDateReport,
   getDateRangeReport,
   getEmailReport,
-  getDepartmentReport,
+  getSectionReport,
   getStudentReport,
 } from "../controllers/reportsController";
 
@@ -41,11 +41,11 @@ router.get("/reports/range", getDateRangeReport);
 router.get("/reports/email/:email", getEmailReport);
 
 
-// GET /api/reports/department/:department?date=2025-10-11
-// get attendance records filtered by department
-// example: /api/reports/department/IT1D
+// GET /api/reports/section/:section?date=2025-10-11
+// get attendance records filtered by section
+// example: /api/reports/section/C1A
 
-router.get("/reports/department/:department", getDepartmentReport);
+router.get("/reports/section/:section", getSectionReport);
 
 // GET /api/reports/student/:partnerId?date=2025-10-11
 // get attendance records filtered by partner ID (student ID)

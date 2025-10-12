@@ -202,8 +202,8 @@ export async function getAttendanceByEmail(
  * @param date - Optional specific date, otherwise searches today
  */
 
-export async function getAttendanceByDepartment(
-  department: string,
+export async function getAttendanceBySection(
+  section: string,
   date?: string | Date
 ): Promise<AttendanceRecord[]> {
   const targetDate = date || new Date();
@@ -214,7 +214,7 @@ export async function getAttendanceByDepartment(
   }
 
   const filteredData = response.data.filter((row: any[]) =>
-    row[6] === department
+    row[6] === section
   );
 
   return filteredData.map((row: any[]) => ({
