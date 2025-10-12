@@ -13,6 +13,8 @@ export interface SheetsAttendanceData {
   guest_fullname: string;
   reg_guest: number;
   card_tag_uid: string;
+  checkIn?: string;
+  check_out?: string;
 }
 
 export interface SheetsResponse {
@@ -33,7 +35,7 @@ function formatDateForSheet(date: Date): string {
 /**
  * Saves attendance data to Google Sheets via Apps Script Web App
  * @param data - The attendance data to save
- * @param sheetName - Optional sheet name (defaults to today's date - handled by Apps Script)
+ * @param sheetName - Optional sheet name (defaults to today's date, handled by Apps Script)
  * @returns Response from Google Sheets Apps Script
  */
 
@@ -125,7 +127,6 @@ export async function getAttendanceByDateRange(
   const allRecords: AttendanceRecord[] = [];
   const currentDate = new Date(start);
 
-  // Fetch data for each date in range
   while (currentDate <= end) {
     try {
       const response = await getAttendanceByDate(currentDate);
