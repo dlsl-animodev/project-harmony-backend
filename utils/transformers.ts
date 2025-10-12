@@ -35,11 +35,14 @@ export function formatDateForSheetName(date: Date = new Date()): string {
 }
 
 /**
- * Formats a date to ISO string for timestamps
+ * Formats a date to ISO string
  * @param date - The date to format
- * @returns ISO formatted date string
+ * @returns Formatted timestamp string
  */
 
-export function formatTimestamp(date: Date = new Date()): string {
-  return date.toISOString();
+export function formatTimestamp(date = new Date()): string {
+  return new Date(date).toLocaleString('en-PH', {
+    hour12: false,
+  }).replace(',', '');
 }
+
