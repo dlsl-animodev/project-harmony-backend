@@ -27,6 +27,8 @@ export async function handleStudentAttendance(
 
     console.log(`[${new Date().toISOString()}] Student data retrieved:`, JSON.stringify(studentData, null, 2));
 
+    const localCheckIn = formatTimestamp(new Date());
+
     const sheetsData = {
       count: studentData.count || 0,
       regKey: studentData.regkey?.toString() || config.regKey || "",
@@ -38,6 +40,7 @@ export async function handleStudentAttendance(
       guest_fullname: studentData.guest_fullname || "",
       reg_guest: typeof studentData.reg_guest === 'string' ? parseInt(studentData.reg_guest) : (studentData.reg_guest || 0),
       card_tag_uid: studentData.card_tag_uid || studentData.partner_id,
+      checkIn: localCheckIn,
     };
 
     console.log(`[${new Date().toISOString()}] Data prepared for sheets:`, JSON.stringify(sheetsData, null, 2));
