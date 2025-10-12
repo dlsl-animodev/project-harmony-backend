@@ -18,12 +18,11 @@ export interface StudentInfo {
   member?: any[];
   card_tag_uid?: string;
   checkIn?: string;
-  [key: string]: any; // Allow additional fields
+  [key: string]: any;
 }
 
 /**
  * Fetches student information from the external API
- * NO event_code needed - the external API just returns the student data!
  * @param studentId - The student's partner_id (from RFID card)
  * @returns The student information in Google Sheets format
  */
@@ -31,7 +30,6 @@ export async function getStudentInfo(studentId: string): Promise<StudentInfo> {
   try {
     console.log(`[API Service] Fetching student info for ID: ${studentId}`);
 
-    // Simple call - only pass the student ID
     const url = `${config.externalApiUrl}/api/student`;
     console.log(`[API Service] URL: ${url}`);
     console.log(`[API Service] Params: { id: ${studentId} }`);
