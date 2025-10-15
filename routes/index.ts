@@ -7,6 +7,7 @@ import {
   getEmailReport,
   getSectionReport,
   getStudentReport,
+  getAvailableDatesReport,
 } from "../controllers/reportsController";
 
 const router = Router();
@@ -52,5 +53,11 @@ router.get("/reports/section/:section", getSectionReport);
 // example: /api/reports/student/1700019550
 
 router.get("/reports/student/:partnerId", getStudentReport);
+
+// GET /api/reports/dates
+// get all available dates (sheet names) from Google Sheets
+// returns an array of dates in YYYY-MM-DD format
+
+router.get("/reports/dates", getAvailableDatesReport);
 
 export default router;
