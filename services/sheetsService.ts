@@ -23,6 +23,13 @@ export interface SheetsResponse {
   action?: "check_in" | "check_out";
 }
 
+export interface AvailableDatesResponse {
+  status: string;
+  message: string;
+  count: number;
+  dates: string[];
+}
+
 // format date as YYYY-MM-DD for sheet name
 
 function formatDateForSheet(date: Date): string {
@@ -286,5 +293,37 @@ export async function hasActiveCheckIn(email: string, partnerId: string): Promis
   } catch (error) {
     console.error('Error checking active check-in:', error);
     return false;
+  }
+}
+
+/**
+ * Get all available dates ( which are the sheet names) from Google Sheets
+ * @returns A chronologically-sorted array of date strings in YYYY-MM-DD format,
+ */
+
+export async function getAvailableDates(): Promise<AvailableDatesResponse> {
+  try {
+    
+    const url = `${config.sheetsWebAppUrl}?action=getDates`;
+
+    const response = await axios.get(config.sheetsWebAppUrl, {
+      params: {
+        action: 'getDates'
+      },
+      timeout: 10000,
+    });
+
+    return response.data;
+
+  } catch (error) {
+
+    console.error(`[Sheets Service] Error fetching dates:`, error);
+    if (axios.isAxiosError(error)) {
+      console.error(`[Sheets Service] Response data:`, error.response?.data);
+      throw new Error(
+        `Google Sheets Error: ${error.response?.data?.message || error.message}`
+      );
+    }
+    throw error;
   }
 }
