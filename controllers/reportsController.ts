@@ -6,6 +6,7 @@ import {
   getAttendanceByEmail,
   getAttendanceBySection,
   getAttendanceByPartnerId,
+  getAvailableDates,
 } from "../services/sheetsService";
 import { formatTimestamp } from "../utils/transformers";
 
@@ -241,6 +242,36 @@ export async function getStudentReport(req: Request, res: Response): Promise<voi
     res.status(500).json({
       success: false,
       error: "Failed to retrieve attendance by student",
+      message: errorMessage,
+      timestamp: formatTimestamp(),
+    });
+  }
+}
+
+
+// get all available dates (sheet names) from Google Sheets
+// GET /api/reports/dates
+
+export async function getAvailableDatesReport(req: Request, res: Response): Promise<void> {
+  try {
+
+    const response = await getAvailableDates();
+
+    res.status(200).json({
+      success: true,
+      message: response.message,
+      count: response.count,
+      dates: response.dates,
+      timestamp: formatTimestamp(),
+    });
+
+  } catch (error) {
+    console.error(`[${new Date().toISOString()}] Error in getAvailableDatesReport:`, error);
+    const errorMessage = error instanceof Error ? error.message : "an error occurred :<";
+    
+    res.status(500).json({
+      success: false,
+      error: "Failed to retrieve available dates",
       message: errorMessage,
       timestamp: formatTimestamp(),
     });
